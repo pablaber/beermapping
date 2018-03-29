@@ -1,0 +1,19 @@
+{
+  "name": "beermapping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node tests"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.85.0",
+    "xml-parser": "^1.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^5.0.1",
+    "jasmine-node": "^1.14.5"
+  }
+}
