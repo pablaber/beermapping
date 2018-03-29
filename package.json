@@ -1,12 +1,21 @@
 {
-  "name": "beermapping",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "beermapping-api",
+  "version": "1.0.2",
+  "description": "A package for simplifying the beermapping api.",
+  "main": "bm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablaber/beermapping.git"
+  },
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node tests"
   },
-  "author": "",
+  "keywords": [
+    "beer",
+    "beermapping",
+    "api"
+  ],
+  "author": "Patrick Bacon-Blaber",
   "license": "ISC",
   "dependencies": {
     "request": "^2.85.0",
