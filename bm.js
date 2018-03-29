@@ -10,26 +10,6 @@ const LOCMAP = "locmap";
 const LOCSCORE = "locscore";
 const LOCIMAGE = "locimage";
 
-function bmQuery(apiKey, arg, queryType) {
-  return new Promise(function(resolve, reject) {
-      try {
-        request(bmUrl(apiKey, queryType, arg), function (error, response, body) {
-          var xml = parse(body);
-          var json = xmlToJson(xml);
-          if(!!json.error) {
-            reject({message: json.message});
-          }
-          else {
-            resolve(json);
-          }
-        });
-      }
-      catch (e) {
-        reject(e);
-      }
-    });
-}
-
 function locquery(apiKey, location) {
   return bmQuery(apiKey, location, LOCQUERY);
 }
@@ -85,4 +65,24 @@ function xmlToJson(xml) {
       message: "Request failed."
     }
   }
+}
+
+function bmQuery(apiKey, arg, queryType) {
+  return new Promise(function(resolve, reject) {
+      try {
+        request(bmUrl(apiKey, queryType, arg), function (error, response, body) {
+          var xml = parse(body);
+          var json = xmlToJson(xml);
+          if(!!json.error) {
+            reject({message: json.message});
+          }
+          else {
+            resolve(json);
+          }
+        });
+      }
+      catch (e) {
+        reject(e);
+      }
+    });
 }
