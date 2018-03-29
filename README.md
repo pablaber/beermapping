@@ -1,5 +1,5 @@
 # Beer Mapping
-A node package for using the [beermapping api](https://beermapping.com/api/)
+A node package for using the [beermapping api](https://beermapping.com/api/) with json responses.
 
 ## Install
 ```bash
