@@ -10,127 +10,49 @@ const LOCMAP = "locmap";
 const LOCSCORE = "locscore";
 const LOCIMAGE = "locimage";
 
-function locquery(apiKey, location) {
-  console.log(bmUrl(apiKey, LOCQUERY, location))
+function bmQuery(apiKey, arg, queryType) {
   return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCQUERY, location), function (error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message});
-        }
-        else {
-          resolve(json);
-        }
-      });
-    }
-    catch (e) {
-      reject(e);
-    }
-  });
+      try {
+        request(bmUrl(apiKey, queryType, arg), function (error, response, body) {
+          var xml = parse(body);
+          var json = xmlToJson(xml);
+          if(!!json.error) {
+            reject({message: json.message});
+          }
+          else {
+            resolve(json);
+          }
+        });
+      }
+      catch (e) {
+        reject(e);
+      }
+    });
+}
+
+function locquery(apiKey, location) {
+  return bmQuery(apiKey, location, LOCQUERY);
 }
 
 function loccity(apiKey, city) {
-  return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCCITY, city), function(error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message})
-        }
-        else {
-          resolve(json);
-        }
-      })
-    }
-    catch (e) {
-      reject(e);
-    }
-  })
+  return bmQuery(apiKey, city, LOCCITY);
 }
 
 function locstate(apiKey, state) {
-  return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCSTATE, state), function(error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message})
-        }
-        else {
-          resolve(json);
-        }
-      })
-    }
-    catch (e) {
-      reject(e);
-    }
-  })
+  return bmQuery(apiKey, state, LOCSTATE);
 }
 
 function locmap(apiKey, id) {
-  return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCMAP, id), function(error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message})
-        }
-        else {
-          resolve(json);
-        }
-      })
-    }
-    catch (e) {
-      reject(e);
-    }
-  })
+  return bmQuery(apiKey, id, LOCMAP);
 }
 
 function locscore(apiKey, id) {
-  return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCSCORE, id), function(error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message})
-        }
-        else {
-          resolve(json);
-        }
-      })
-    }
-    catch (e) {
-      reject(e);
-    }
-  })
+  return bmQuery(apiKey, id, LOCSCORE);
 }
 
 function locimage(apiKey, id) {
-  return new Promise(function(resolve, reject) {
-    try {
-      request(bmUrl(apiKey, LOCIMAGE, id), function(error, response, body) {
-        var xml = parse(body);
-        var json = xmlToJson(xml);
-        if(!!json.error) {
-          reject({message: json.message})
-        }
-        else {
-          resolve(json);
-        }
-      })
-    }
-    catch (e) {
-      reject(e);
-    }
-  })
+  return bmQuery(apiKey, id, LOCIMAGE);
 }
-
 
 module.exports = {
   locquery: locquery,
