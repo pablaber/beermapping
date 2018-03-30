@@ -1,14 +1,54 @@
-var parse = require('xml-parser');
-var request = require('request');
+const parse = require('xml-parser');
+const request = require('request');
 
 // Locquery Service
 
-const LOCQUERY = "locquery";
-const LOCCITY = "loccity";
-const LOCSTATE = "locstate";
-const LOCMAP = "locmap";
-const LOCSCORE = "locscore";
-const LOCIMAGE = "locimage";
+const LOCQUERY = 'locquery';
+const LOCCITY = 'loccity';
+const LOCSTATE = 'locstate';
+const LOCMAP = 'locmap';
+const LOCSCORE = 'locscore';
+const LOCIMAGE = 'locimage';
+
+function bmUrl(apiKey, page, argument) {
+  return `http://beermapping.com/webservice/${page}/${apiKey}/${argument}`;
+}
+
+function xmlToJson(xml) {
+  if (!!xml && !!xml.root && xml.root.children) {
+    const base = xml.root;
+    const json = base.children.map((e) => {
+      const obj = e.children.reduce((acc, val) => {
+        acc[val.name] = val.content;
+        return acc;
+      }, {});
+      return obj;
+    });
+    return json;
+  }
+  return {
+    error: true,
+    message: 'Request failed.',
+  };
+}
+
+function bmQuery(apiKey, arg, queryType) {
+  return new Promise((resolve, reject) => {
+    try {
+      request(bmUrl(apiKey, queryType, arg), (error, response, body) => {
+        const xml = parse(body);
+        const json = xmlToJson(xml);
+        if (json.error) {
+          reject(new Error(json.message));
+        } else {
+          resolve(json);
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
 
 function locquery(apiKey, location) {
   return bmQuery(apiKey, location, LOCQUERY);
@@ -35,54 +75,10 @@ function locimage(apiKey, id) {
 }
 
 module.exports = {
-  locquery: locquery,
-  loccity: loccity,
-  locstate: locstate,
-  locmap: locmap,
-  locscore: locscore,
-  locimage: locimage,
-}
-
-function bmUrl(apiKey, page, argument) {
-  return `http://beermapping.com/webservice/${page}/${apiKey}/${argument}`
-}
-
-function xmlToJson(xml) {
-  if(!!xml && !!xml.root && xml.root.children) {
-    var base = xml.root;
-    var json = base.children.map(function(e) {
-      var element = {};
-      for (let child of e.children) {
-        element[child.name] = child.content;
-      }
-      return element;
-    });
-    return json;
-  }
-  else {
-    return {
-      error: true,
-      message: "Request failed."
-    }
-  }
-}
-
-function bmQuery(apiKey, arg, queryType) {
-  return new Promise(function(resolve, reject) {
-      try {
-        request(bmUrl(apiKey, queryType, arg), function (error, response, body) {
-          var xml = parse(body);
-          var json = xmlToJson(xml);
-          if(!!json.error) {
-            reject({message: json.message});
-          }
-          else {
-            resolve(json);
-          }
-        });
-      }
-      catch (e) {
-        reject(e);
-      }
-    });
-}
+  locquery,
+  loccity,
+  locstate,
+  locmap,
+  locscore,
+  locimage,
+};
