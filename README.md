@@ -6,7 +6,7 @@ A node package for using the [beermapping api](https://beermapping.com/api/) wit
 
 ## Install
 ```bash
-npm install beermapping --save
+npm install beermapping-api --save
 ```
 
 ## Use
